@@ -19,3 +19,13 @@ output "instance_state" {
   value       = aws_instance.web.instance_state
   description = "Current state of EC2"
 }
+
+output "security_group_id" {
+  value       = aws_security_group.app.id
+  description = "Security group ID"
+}
+
+output "security_group_name" {
+  value       = aws_security_group.app.name
+  description = "Security group name"
+}

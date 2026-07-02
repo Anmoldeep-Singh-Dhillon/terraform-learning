@@ -17,3 +17,14 @@ variable "aws_region" {
   description = "AWS region"
   default     = "ap-south-1"
 }
+
+variable "ami_id" {
+  type        = string
+  description = "AMI ID for EC2 instance (Ubuntu 22.04 in ap-south-1)"
+  default     = "ami-01a00762f46d584a1"  # You'll update this with real AMI
+}
+
+variable "vpc_id"{
+  type = string
+  description = "vpc id"
+}
