@@ -42,3 +42,13 @@ variable "ami_id" {
   type        = string
   description = "AMI ID"
 }
+variable "ingress_rules" {
+  type = map(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_ipv4   = string
+  }))
+  description = "Ingress rules for security group"
+  # No default - defined in terraform.tfvars
+}

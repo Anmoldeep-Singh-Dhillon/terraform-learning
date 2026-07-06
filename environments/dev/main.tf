@@ -17,6 +17,7 @@ module "security_group" {
 
   vpc_id           = module.vpc.vpc_id
   environment_name = var.environment_name
+  ingress_rules = var.ingress_rules
 }
 
 # EC2 Module

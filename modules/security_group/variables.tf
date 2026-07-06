@@ -15,3 +15,13 @@ variable "allowed_ssh_cidr" {
   description = "CIDR block allowed for SSH"
   default     = "0.0.0.0/0"  # WARNING: Open to world for learning
 }
+
+variable "ingress_rules" {
+  type = map(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_ipv4   = string
+  }))
+  description = "Ingress rules for security group"
+}

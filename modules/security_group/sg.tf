@@ -10,47 +10,22 @@ resource "aws_security_group" "app_sg" {
   }
 }
 
-# Ingress: SSH
-resource "aws_vpc_security_group_ingress_rule" "ssh" {
+# Ingress rules - using for_each LOOP
+resource "aws_vpc_security_group_ingress_rule" "app" {
+  for_each = var.ingress_rules
+
   security_group_id = aws_security_group.app_sg.id
 
-  from_port   = 22
-  to_port     = 22
-  ip_protocol = "tcp"
-  cidr_ipv4   = var.allowed_ssh_cidr
+  from_port   = each.value.from_port
+  to_port     = each.value.to_port
+  ip_protocol = each.value.protocol
+  cidr_ipv4   = each.value.cidr_ipv4
 
   tags = {
-    Name = "allow-ssh"
+    Name = "allow-${each.key}"
   }
 }
 
-# Ingress: HTTP
-resource "aws_vpc_security_group_ingress_rule" "http" {
-  security_group_id = aws_security_group.app_sg.id
-
-  from_port   = 80
-  to_port     = 80
-  ip_protocol = "tcp"
-  cidr_ipv4   = "0.0.0.0/0"
-
-  tags = {
-    Name = "allow-http"
-  }
-}
-
-# Ingress: HTTPS
-resource "aws_vpc_security_group_ingress_rule" "https" {
-  security_group_id = aws_security_group.app_sg.id
-
-  from_port   = 443
-  to_port     = 443
-  ip_protocol = "tcp"
-  cidr_ipv4   = "0.0.0.0/0"
-
-  tags = {
-    Name = "allow-https"
-  }
-}
 
 # Egress: All outbound
 resource "aws_vpc_security_group_egress_rule" "all_outbound" {
@@ -65,3 +40,46 @@ resource "aws_vpc_security_group_egress_rule" "all_outbound" {
     Name = "allow-all-outbound"
   }
 }
+
+# # Ingress: SSH
+# resource "aws_vpc_security_group_ingress_rule" "ssh" {
+#   security_group_id = aws_security_group.app_sg.id
+
+#   from_port   = 22
+#   to_port     = 22
+#   ip_protocol = "tcp"
+#   cidr_ipv4   = var.allowed_ssh_cidr
+
+#   tags = {
+#     Name = "allow-ssh"
+#   }
+# }
+
+# # Ingress: HTTP
+# resource "aws_vpc_security_group_ingress_rule" "http" {
+#   security_group_id = aws_security_group.app_sg.id
+
+#   from_port   = 80
+#   to_port     = 80
+#   ip_protocol = "tcp"
+#   cidr_ipv4   = "0.0.0.0/0"
+
+#   tags = {
+#     Name = "allow-http"
+#   }
+# }
+
+# # Ingress: HTTPS
+# resource "aws_vpc_security_group_ingress_rule" "https" {
+#   security_group_id = aws_security_group.app_sg.id
+
+#   from_port   = 443
+#   to_port     = 443
+#   ip_protocol = "tcp"
+#   cidr_ipv4   = "0.0.0.0/0"
+
+#   tags = {
+#     Name = "allow-https"
+#   }
+# }
+
